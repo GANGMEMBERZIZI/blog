@@ -397,9 +397,38 @@ class maintopic extends HTMLElement {
     </div>`;
     }
 }
+class Comments extends HTMLElement {
+    constructor() {
+        super();
+    }
+    connectedCallback() {
+        this.innerHTML = `<div class="comment">
+            <div class="title">
+            <h2>评论区</h2>
+        </div>
+        <div class="comment-section">
+    <div id="login-prompt-box" class="placeholder-box" style="display: none;">
+        <p>登录后才能发表评论</p>
+        <button onclick="window.location.href='/login'">去登录</button>
+    </div>
+    <div id="actual-input-box" class="real-input-box" >
+        <textarea id="comment-content" placeholder="写下你的留言..."></textarea>
+        <button id="subcomment">发 表</button>
+    </div>
+    </div>
+        <div class="thecomments">
+            <h2 class="totalcomments">共有0条评论</h2>
+            <div class="commentcontent">
+                
+            </div>           
+        </div>        
+        </div> `;
+    }
+}
 customElements.define('my-maintopic', maintopic);
 customElements.define('my-mainme', mainme);
 customElements.define("my-login-and-register", LoginAndRegiter);
+customElements.define("my-comments", Comments);
 customElements.define("my-header", Header);
 customElements.define("my-footer", Footer);
 //# sourceMappingURL=common.js.map

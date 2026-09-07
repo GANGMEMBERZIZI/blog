@@ -1,5 +1,6 @@
 import {marked} from "marked";
 import DOMPurify from "dompurify";
+import {initCurrentComment} from './comment.js';
 async function loadPassage() {
     try{
         const title =decodeURIComponent(location.pathname.split("/")[2] as string);
@@ -15,6 +16,7 @@ async function loadPassage() {
         const HTML=await marked.parse(data.content);
         const cleanHTML=DOMPurify.sanitize(HTML);
         maintopic!.innerHTML=`<div class="markdown-body">${cleanHTML}</div>`;
+        initCurrentComment(data.passage_id);
     }
     catch(error){
         console.log(`load错误,${error}`);

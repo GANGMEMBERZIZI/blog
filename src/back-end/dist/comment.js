@@ -4,7 +4,7 @@ import { pool } from './main.js';
 import { authenticateToken } from './auth.js';
 router.post('/', authenticateToken, async (req, res) => {
     try {
-        const { content } = req.body;
+        const { content, passage_id } = req.body;
         if (!content) {
             return res.status(400).json({ status: "error", message: "不能为空" });
         }
@@ -12,8 +12,9 @@ router.post('/', authenticateToken, async (req, res) => {
         if (!userId) {
             return res.status(401).json({ status: "error", message: "拒绝访问！" });
         }
-        const query = 'INSERT INTO comments (user_id, content) VALUES ($1,$2)';
-        await pool.query(query, [userId, content]);
+        const id = passage_id || 0;
+        const query = 'INSERT INTO comments (user_id, content, passage_id) VALUES ($1, $2, $3)';
+        await pool.query(query, [userId, content, id]);
         res.json({ status: "success", message: `留言成功降临！` });
     }
     catch (error) {
@@ -25,16 +26,18 @@ router.get('/', async (req, res) => {
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 50;
         const offset = (page - 1) * limit;
+        const pid = req.query.passage_id || 0;
         const dataQuery = `
             SELECT comments.id, users.username AS nickname, comments.content, comments.created_at 
             FROM comments 
-            INNER JOIN users ON comments.user_id = users.id 
+            INNER JOIN users ON comments.user_id = users.id
+            WHERE comments.passage_id = $1 
             ORDER BY comments.id DESC 
-            LIMIT $1 OFFSET $2
+            LIMIT $2 OFFSET $3
         `;
-        const result = await pool.query(dataQuery, [limit, offset]);
-        const countQuery = 'SELECT COUNT(*) FROM comments';
-        const countResult = await pool.query(countQuery);
+        const result = await pool.query(dataQuery, [pid, limit, offset]);
+        const countQuery = 'SELECT COUNT(*) FROM comments WHERE passage_id = $1';
+        const countResult = await pool.query(countQuery, [pid]);
         const totalComments = parseInt(countResult.rows[0].count);
         const totalPages = Math.ceil(totalComments / limit);
         res.json({

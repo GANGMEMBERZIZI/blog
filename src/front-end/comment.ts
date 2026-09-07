@@ -13,12 +13,18 @@ interface comment{
     created_at: string;
 }
 interface submitContent{
-    content:string
+    content:string;
+    passage_id:number;
 }
 interface CurrentUser {
     id: number;
     username: string;
     role: string;
+}
+export let currentId=0;
+export function initCurrentComment(n:number){
+    currentId=n;
+    loadComments();
 }
 export async function isLogged() {
     try{
@@ -47,11 +53,15 @@ document.addEventListener("DOMContentLoaded",async()=>{
         login.style.display='flex';
         comment.style.display='none'
     }
-    loadComments();
+    const currentPath = window.location.pathname;
+    if (!currentPath.startsWith("/passage/")) {
+        loadComments();
+    }
 });
+//显示总数
 async function loadComments() {
     try{
-        const response=await fetch("/api/about");
+        const response=await fetch(`/api/comments?passage_id=${currentId}`);
         const result:commentsData=await response.json();
         const commentsArray=result.data;
         totalcomments=result.totalComments;
@@ -66,6 +76,7 @@ async function loadComments() {
         console.error("空间链路断裂，获取留言失败:", error);
     }
 }
+
 async function renderComments(commentsArray:comment[]){
     const container=document.querySelector<HTMLDivElement>(".commentcontent");
     if(!container){
@@ -124,14 +135,15 @@ async function submitComment() {
         return;
     }
     const body:submitContent={
-        content:content
+        content:content,
+        passage_id:currentId
     };
     if(!(await isLogged())){
         window.location.href="/login";
         return;
     }
     //credentials: 'include' cookies
-    const response=await fetch("/api/about",{
+    const response=await fetch("/api/comments",{
         method:'POST',
         credentials: 'include',
         headers:{
@@ -152,7 +164,7 @@ async function deleteComment(commentId:number){
         window.location.href = '/login';
         return;
     }
-    const response=await fetch(`/api/about/${commentId}`,{
+    const response=await fetch(`/api/comments/${commentId}`,{
         method:'DELETE',
         credentials: 'include'
     });

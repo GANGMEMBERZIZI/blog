@@ -1,4 +1,9 @@
 const sub = document.querySelector("#subcomment");
+export let currentId = 0;
+export function initCurrentComment(n) {
+    currentId = n;
+    loadComments();
+}
 export async function isLogged() {
     try {
         const response = await fetch("/api/auth/me", {
@@ -27,11 +32,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         login.style.display = 'flex';
         comment.style.display = 'none';
     }
-    loadComments();
+    const currentPath = window.location.pathname;
+    if (!currentPath.startsWith("/passage/")) {
+        loadComments();
+    }
 });
+//显示总数
 async function loadComments() {
     try {
-        const response = await fetch("/api/about");
+        const response = await fetch(`/api/comments?passage_id=${currentId}`);
         const result = await response.json();
         const commentsArray = result.data;
         totalcomments = result.totalComments;
@@ -105,14 +114,15 @@ async function submitComment() {
         return;
     }
     const body = {
-        content: content
+        content: content,
+        passage_id: currentId
     };
     if (!(await isLogged())) {
         window.location.href = "/login";
         return;
     }
     //credentials: 'include' cookies
-    const response = await fetch("/api/about", {
+    const response = await fetch("/api/comments", {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -134,7 +144,7 @@ async function deleteComment(commentId) {
         window.location.href = '/login';
         return;
     }
-    const response = await fetch(`/api/about/${commentId}`, {
+    const response = await fetch(`/api/comments/${commentId}`, {
         method: 'DELETE',
         credentials: 'include'
     });
