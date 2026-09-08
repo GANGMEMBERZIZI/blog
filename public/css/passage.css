@@ -2,20 +2,21 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 20px;
 }
 .article {
   background-color: #ffffff;
   width: 100%;
-  max-width: 420px;
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 .article:hover {
   transform: translateY(-4px);
@@ -26,7 +27,7 @@ ul {
 }
 .articleCover img {
   width: 100%;
-  height: auto;
+  height: 250px;
   border-radius: 4px;
   display: block;
   object-fit: cover;
@@ -48,6 +49,7 @@ ul {
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
 }
 .articleData {
   display: flex;

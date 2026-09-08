@@ -39,6 +39,7 @@ async function loadArticleList(page = 1) {
                     }
                     else {
                         textNode.innerText = article.content;
+                        textNode.style.margin = '0 1vw';
                         textNode.style.whiteSpace = 'pre-wrap';
                         textNode.style.lineHeight = '1.6';
                     }
