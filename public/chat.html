@@ -13,29 +13,12 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/variable.css">
     <link rel="stylesheet" href="./css/sakura.css">
-    <link rel="stylesheet" href="./css/chat.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <title>AI Chat</title>
 </head>
 <body>
     <my-header></my-header>
-    <div class="maintopic">
-         <div class="chatTitle">
-         <h2>Sena Chat</h2>
-         <img src="./img/3b7c81d119bd352045f7cf7c7de1d220-removebg-preview.png" alt="" class="chattitle">
-    </div>
-    <div id="chatbox">
-        </div>
-    <div class="input-area">
-        <input type="file" id="fileInput" multiple style="display: none;">
-        <button id="uploadBtn" onclick="document.getElementById('fileInput').click()" style="background: none; border: none; cursor: pointer; font-size: 20px; padding-right: 10px;">
-            📎
-        </button>
-        <textarea id="chatInput" placeholder="和星奏说点什么吧... (Shift + Enter 换行)" rows="1"></textarea>
-        <button id="sendBtn" class="ai-send-btn">
-        </button>
-    </div>
-    </div> 
+    <my-ai-chat></my-ai-chat>
     <my-footer></my-footer>
     <meting-js
         server="netease"

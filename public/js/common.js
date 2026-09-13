@@ -209,7 +209,9 @@ class mainme extends HTMLElement {
         super();
     }
     connectedCallback() {
-        this.innerHTML = `<div class="mainme">
+        const shadow = this.attachShadow({ mode: "open" });
+        const sheet = new CSSStyleSheet();
+        shadow.innerHTML = `<div class="mainme">
         <div class="mysaying">
             <h2>📃我的自传</h2>
             <div class="p">zizi,网名取自<a href="https://space.bilibili.com/686127" target="_blank">籽岷</a>,是吟游诗人,思想家,人民教育家,编程爱好者(软硬皆可),二次元爱好者,galgame评论家</div>
@@ -237,6 +239,8 @@ class mainme extends HTMLElement {
             <div class="p">装逼,没了,喜欢侮辱他人</div>
         </div>  
         </div>`;
+        sheet.replaceSync(`.mainme{margin:0 auto}.mainme .mysaying{background-color:rgba(255,255,255,0.8);margin:2.66666667vw 21.33333333vw;padding:1.86666667vw 1.86666667vw;border-radius:1.33333333vw;box-shadow:0 20px 40px rgba(0,0,0,0.15)}.mainme .mysaying h2{font-family:'JetBrains Mono';font-weight:bold;font-size:1.33333333vw;color:#FFB7C5}.mainme .mysaying .p{color:red;margin-top:0.53333333vw;font-size:1.06666667vw;line-height:2.66666667vw}.mainme .mysaying .p a{color:red}.mainme .mysaying ul{font-size:1.06666667vw;line-height:2.66666667vw}.mainme .mysaying .email{margin-top:0.8vw}*{margin:0;padding:0;box-sizing:border-box}:host{font:16px/1.5 "Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;color:#333}ul,ol{list-style:none}em,i{font-style:normal}a{text-decoration:none;color:#333}img{width:100%;height:100%;vertical-align:middle}input{border:none;outline:none;color:#333}h1,h2,h3,h4,h5,h6{font-weight:400}`);
+        shadow.adoptedStyleSheets = [sheet];
     }
 }
 class maintopic extends HTMLElement {
@@ -398,6 +402,9 @@ class maintopic extends HTMLElement {
     }
 }
 class Comments extends HTMLElement {
+    static get observedAttributes() {
+        return ["login-in"];
+    }
     constructor() {
         super();
     }
@@ -423,6 +430,26 @@ class Comments extends HTMLElement {
             </div>           
         </div>        
         </div> `;
+        this.updateUI(this.getAttribute('login-in') === 'true');
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'login-in') {
+            this.updateUI(newValue === 'true');
+        }
+    }
+    updateUI(isLogin) {
+        const login = this.querySelector("#login-prompt-box");
+        const comment = this.querySelector("#actual-input-box");
+        if (!login || !comment)
+            return;
+        if (isLogin) {
+            login.style.display = 'none';
+            comment.style.display = 'flex';
+        }
+        else {
+            login.style.display = 'flex';
+            comment.style.display = 'none';
+        }
     }
 }
 customElements.define('my-maintopic', maintopic);

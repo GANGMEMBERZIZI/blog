@@ -1,35 +1,3 @@
-.mainme {
-  margin: 0 auto;
-}
-.mainme .mysaying {
-  background-color: #fff;
-  margin: 2.66666667vw 21.33333333vw;
-  padding: 1.86666667vw 1.86666667vw;
-  border-radius: 1.33333333vw;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-.mainme .mysaying h2 {
-  font-family: 'JetBrains Mono';
-  font-weight: bold;
-  font-size: 1.33333333vw;
-  color: #FFB7C5;
-}
-.mainme .mysaying .p {
-  color: red;
-  margin-top: 0.53333333vw;
-  font-size: 1.06666667vw;
-  line-height: 2.66666667vw;
-}
-.mainme .mysaying .p a {
-  color: red;
-}
-.mainme .mysaying ul {
-  font-size: 1.06666667vw;
-  line-height: 2.66666667vw;
-}
-.mainme .mysaying .email {
-  margin-top: 0.8vw;
-}
 .comment {
   margin: 0 auto;
 }
@@ -42,7 +10,7 @@
 }
 .comment .placeholder-box {
   margin: 2.66666667vw 21.33333333vw;
-  background-color: #fff;
+  background-color:rgba(255,255,255,0.8);
   border-radius: 0.8vw;
   padding: 2.66666667vw 0;
   height: 10.66666667vw;

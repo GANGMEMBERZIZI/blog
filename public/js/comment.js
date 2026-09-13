@@ -18,19 +18,14 @@ export async function isLogged() {
 }
 let totalcomments = 0;
 document.addEventListener("DOMContentLoaded", async () => {
-    const login = document.querySelector("#login-prompt-box");
-    const comment = document.querySelector("#actual-input-box");
-    if (!login || !comment) {
-        console.log("为空");
-        return;
-    }
-    if (await isLogged()) {
-        login.style.display = 'none';
-        comment.style.display = 'flex';
-    }
-    else {
-        login.style.display = 'flex';
-        comment.style.display = 'none';
+    const commentUI = document.querySelector('my-comments');
+    if (commentUI) {
+        if (await isLogged()) {
+            commentUI.setAttribute('login-in', 'true');
+        }
+        else {
+            commentUI.setAttribute('login-in', 'false');
+        }
     }
     const currentPath = window.location.pathname;
     if (!currentPath.startsWith("/passage/")) {
